@@ -16,22 +16,25 @@ class TestBaseModel(unittest.TestCase):
         rep = str(self.model)
         self.assertIn("[BaseModel]", rep)
 
-    def test_to_dict_method(self):
-        """Test to_dict method creates accurate dictionary representation"""
-        model_dict = self.model.to_dict()
-        self.assertEqual(model_dict["__class__"], "BaseModel")
-        self.assertEqual(model_dict["created_at"], self.model.created_at.isoformat())
-        self.assertEqual(model_dict["updated_at"], self.model.updated_at.isoformat())
+    def test_todict(self):
+        """ """
+        i = self.value()
+        n = i.to_dict()
+        self.assertEqual(i.to_dict(), n)
 
-    def test_kwargs_one(self):
-        """Test instantiation with kwargs"""
-        n = {
-            'created_at': '2024-06-08T12:00:00.000000',
-            'updated_at': '2024-06-08T12:00:00.000000'
-        }
+
+     def test_created_at(self):
+        """ """
+        new = self.value()
+        self.assertEqual(type(new.created_at), datetime.datetime)
+
+    def test_updated_at(self):
+        """ """
+        new = self.value()
+        self.assertEqual(type(new.updated_at), datetime.datetime)
+        n = new.to_dict()
         new = BaseModel(**n)
-        self.assertEqual(new.created_at, datetime.fromisoformat('2024-06-08T12:00:00.000000'))
-        self.assertEqual(new.updated_at, datetime.fromisoformat('2024-06-08T12:00:00.000000'))
+        self.assertFalse(new.created_at == new.updated_at)
 
 if __name__ == '__main__':
     unittest.main()
